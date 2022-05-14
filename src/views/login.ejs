@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Server Login</title>
+        <style>
+            .login-from {
+                width: 25%;
+                margin: 0 auto;
+                font-family: Tahoma, Geneva, sans-serif;
+                color: #4d4d4d;
+            }
+            .login-from h1 {
+                text-align: center;
+                margin: 0 auto;
+                color: #4d4d4d;
+                font-size: 24px;
+                padding: 20px 0 20px 0;
+            }
+            .login-from input {
+                width: 100%;
+                margin: 4px auto;
+                text-align: left;
+                padding: 20px;
+                border: 1px solid #dddddd;
+                /*margin-bottom: 12px;*/
+            	box-sizing: border-box;
+                background-color: white;
+                font-weight: bold;
+                color: black;
+            }
+            .login-from button {
+                width: 100%;
+                margin: 6px auto;
+                border: none;
+                /*background-color: cadetblue;*/
+                /*color: black;*/
+                font-size: 15px;
+                padding: 12px 16px;
+                background-color: #535b63;
+                /*border: 0;*/
+                box-sizing: border-box;
+                cursor: pointer;
+                font-weight: bold;
+                color: #ffffff;
+            }
+        </style>
+    </head>
+    <form action="/login" method="POST">
+        <div class="login-from">
+            <h1>Login</h1>
+                  <input type="text" placeholder="Username" id="username" name="username" required>
+                  <br>
+                  <input type="password" placeholder="Password" id="password" name="password" required>
+                  <br>
+                  <button type="submit">Login</button>
+        </div>
+    </form>
+</html>

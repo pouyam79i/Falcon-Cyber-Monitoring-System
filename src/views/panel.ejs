@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Panel</title>
+    <style>
+        .userPanel {
+            width: 100%;
+            height: 700px;
+            /*margin: 0 auto;*/
+            font-family: Tahoma, Geneva, sans-serif;
+            color: #4d4d4d;
+        }
+        .userPanel h1 {
+            text-align: left;
+            font-size: 24px;
+        }
+        .userPanel h2 {
+            text-align: left;
+            font-size: 19px;
+        }
+        .userPanel button {
+            width: 25%;
+            border: none;
+            box-sizing: border-box;
+            margin-bottom: 2px;
+            background-color: #535b63;
+            color: #ffffff;
+            font-size: 16px;
+            padding: 12px 16px;
+        }
+        .userPanel textarea {
+            width: 100%;
+            height: 400px;
+            box-sizing: border-box;
+            resize: vertical;
+            background-color: #384242;
+            font-weight: bold;
+            color: lightgrey;
+        }
+    </style>
+</head>
+<div class="userPanel">
+    <h1>
+        Hello, <%=name%>
+    </h1>
+    <form action="/crawler/get/channels" method="POST">
+        <button type="submit">Get channels</button>
+        <br>
+        <textarea name="Result" wrap="soft" readonly> <%=res%></textarea>
+    </form>
+</div>
+</html>
