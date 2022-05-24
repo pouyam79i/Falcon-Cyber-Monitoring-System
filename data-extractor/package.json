@@ -1,0 +1,14 @@
+{
+  "name": "data-extractor",
+  "version": "1.0.0",
+  "description": "This app will crawl telegram channals and put extracted data inside a json file",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pouya Mohammadi",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "@mtproto/core": "6.2.0"
+  }
+}
