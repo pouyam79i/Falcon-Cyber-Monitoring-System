@@ -20,7 +20,7 @@ class Symbol:
 symbols = {}
 
 def import_symbols():
-    with open('symbols.csv', 'r') as f:
+    with open('resources/TSETMC/symbols/symbols.csv', 'r') as f:
         csv_reader = csv.reader(f, delimiter='	')
         line_count = 0
         for row in csv_reader:
