@@ -27,7 +27,7 @@ def crawl():
     # gathering channel infos
     with TelegramClient(username, api_id, api_hash) as client:
         for dialog in client.iter_dialogs():
-            if not dialog.is_group and dialog.is_channel:
+            if dialog.is_group or dialog.is_channel:
                 # print("Channel ID: " + str(dialog.id) + ", Channel Title: " + dialog.title)
                 channeles.append(dialog.id)
                 channeles_name['{}'.format(dialog.id)] = '{}'.format(dialog.title)
@@ -43,7 +43,7 @@ def crawl():
                 "channel_id" : chat,                                    # int
                 "channel_name" : channeles_name['{}'.format(chat)],     # str
                 "id" : message.id,                                      # int
-                "from_id" : message.from_id,                            # int or null  
+                "from_id" : str(message.from_id),                       # str or null
                 "text" : message.text,                                  # str
                 "date" : str(message.date),                             # str
                 "views" : message.views,                                # int
