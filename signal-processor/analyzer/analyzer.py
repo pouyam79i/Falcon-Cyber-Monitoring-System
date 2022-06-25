@@ -2,7 +2,10 @@
 from __future__ import unicode_literals
 import hazm
 from polyglot.text import Text, Word, WordList, Chunk, Sentence
+from typing import List
+
 import symbols
+import os
 import summarizer
 
 symbols.import_symbols()
@@ -10,11 +13,12 @@ symbols.import_symbols()
 normalizer = hazm.Normalizer()
 stemmer = hazm.Stemmer()
 lemmatizer = hazm.Lemmatizer()
-tagger = hazm.POSTagger(model='resources/hazm/postagger.model')
-chunker = hazm.Chunker(model='resources/hazm/chunker.model')
+
+tagger = hazm.POSTagger(model='../resources/hazm/postagger.model')
+chunker = hazm.Chunker(model='../resources/hazm/chunker.model')
 
 
-def count_symbols(words: list['str'], symbols_count: dict):
+def count_symbols(words: List['str'], symbols_count: dict):
     for w in words:
         if symbols.symbols.get(w):
             symbols_count[w] = symbols_count[w] + 1 if symbols_count.get(w) else 1
@@ -94,14 +98,15 @@ if __name__ == '__main__':
 '''
     # print(parse_text('وقت مناسبی برای فروش است'))
     # print(parse_text(txt))
-    import fasttext
-    model_path = 'resources/Persian-Wikipedia-Corpus/models/fasttext-cbow/fasttext.model-size=200-window=5.bin'
+    # import fasttext
+    # model_path = 'resources/Persian-Wikipedia-Corpus/models/fasttext-cbow/fasttext.model-size=200-window=5.bin'
     # data = 'resources/Dataset-TSE-chat-in-Telegram-group/chat.clean.txt'
     # model_path = 'resources/fasttext.telegram.tse.chat.bin'
     # model = fasttext.train_supervised(data)
     # model.save_model(model_path)
-    print('سلام!0')
+    # print('سلام!0')
     # model = fasttext.load_model(model_path, encoding='utf-8')
-    model = fasttext.load_model(model_path)
-    print('سلام!')
-    model.predict_output_word('سلام')
+    # model = fasttext.load_model(model_path)
+    # print('سلام!')
+    # model.predict_output_word('سلام')
+    print(parse_text(txt))

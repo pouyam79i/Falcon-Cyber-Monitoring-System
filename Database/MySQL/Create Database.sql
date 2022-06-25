@@ -1,2 +1,1 @@
-DROP DATABASE IF EXISTS Falcon_Cyber_Monitoring_System;
-CREATE DATABASE Falcon_Cyber_Monitoring_System;
+CREATE DATABASE IF NOT EXISTS Falcon_Cyber_Monitoring_System;

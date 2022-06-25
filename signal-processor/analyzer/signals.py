@@ -1,3 +1,5 @@
+from typing import List
+
 from symbols import Symbol
 
 
@@ -14,7 +16,7 @@ class Signal:
     def set_text(self, text):
         self.text = text
 
-    def add_symbols(self, *symbols: list[Symbol]):
+    def add_symbols(self, *symbols: List[Symbol]):
         if isinstance(self.symbols, list):
             self.symbols.append(*symbols)
         else:
