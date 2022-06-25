@@ -3,3 +3,6 @@
 
 # ignore created database
 storage
+
+# ignoring config file
+*.ini
