@@ -1,7 +1,8 @@
 from symbols import Symbol
 
+
 class Signal:
-    def __init__(self, text,  symbols: [Symbol], polarity, info):
+    def __init__(self, text, symbols: [Symbol], polarity, info):
         self.symbols = symbols
         self.polarity = polarity
         self.text = text

@@ -1,5 +1,6 @@
 import csv
 
+
 class Symbol:
     def __init__(self, args):
         faname, symbol, enname, ensymbol, board, industry_group, group, code, *extra = args[::-1]
@@ -17,7 +18,9 @@ class Symbol:
     def __repr__(self):
         return self.symbol
 
+
 symbols = {}
+
 
 def import_symbols():
     with open('resources/TSETMC/symbols/symbols.csv', 'r') as f:
