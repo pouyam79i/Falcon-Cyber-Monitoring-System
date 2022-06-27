@@ -1,17 +1,14 @@
 # Importing required modules
 # from telethon.sync import TelegramClient
 import sys
-from telethon import TelegramClient
+from unittest import result
+from telethon.sync import TelegramClient
 import configparser
 import datetime
 import json
+from aiohttp import web
 
-# importing for api route
-import flask
-from flask import request, jsonify
-
-app = flask.Flask(__name__)
-app.config["DEBUG"] = True
+# main code:
 
 def read_conf():
     # reading config file
@@ -55,15 +52,14 @@ def modify_conf(limit=-1, date=-1):
         return
 
 
-# crawler method
-@app.route('/crawl', methods=['GET'])
-def crawl():
+# crawler functionality
+async def crawl():
 
     # reading config files
     config = read_conf()
     if config is False:
         print("Cannot crawl! reason: cannot read config info")
-        return jsonify({"attempt" : "failed", "reason" : "cannot read sys.ini"})
+        return {"attempt" : "failed", "reason" : "cannot read sys.ini"}
 
     # client configs
     api_id = config["client"]["api_id"]
@@ -84,8 +80,8 @@ def crawl():
 
     try:
         # gathering channel infos
-        with TelegramClient(username, api_id, api_hash) as client:
-            for dialog in client.iter_dialogs():
+        async with TelegramClient(username, api_id, api_hash) as client:
+            async for dialog in client.iter_dialogs():
                 if dialog.is_group or dialog.is_channel:
                     # print("Channel ID: " + str(dialog.id) + ", Channel Title: " + dialog.title)
                     channeles.append(dialog.id)
@@ -98,7 +94,7 @@ def crawl():
 
             counter = 0
             for chat in channeles:    
-                for message in client.iter_messages(chat, offset_date=date , reverse=True):
+                async for message in client.iter_messages(chat, offset_date=date , reverse=True):
 
                     # data format
                     data = {
@@ -125,12 +121,21 @@ def crawl():
             save_json(data_list, file_address)
 
             # returning jsonified result
-            return jsonify(data_list)
+            return data_list
     except:
         print("Cannot crawl data! ", sys.exc_info()[0], " occured!")
-        return jsonify({"attempt" : "failed", "reason" : "not defined!"})    
+        return {"attempt" : "failed", "reason" : "not defined!"}
+
 
 # call this method to crawl telegram messages
 
-# running flask app
-app.run()
+routes = web.RouteTableDef()
+
+@routes.get('/crawl')
+async def crawler(request):
+    result = await crawl()
+    return web.json_response(result)
+
+app = web.Application()
+app.add_routes(routes)
+web.run_app(app)
