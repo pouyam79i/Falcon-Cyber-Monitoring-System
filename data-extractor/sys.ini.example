@@ -4,5 +4,9 @@ api_hash = YOUR_HASH
 username = YOUR_USERNAME
 phone = +9999999999
 
+[setting]
+limit = 0
+date = 0
+
 [database]
-file_address = storage/data.json
+file_address = storage/
