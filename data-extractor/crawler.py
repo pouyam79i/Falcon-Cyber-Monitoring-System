@@ -62,15 +62,15 @@ async def crawl():
         return {"attempt" : "failed", "reason" : "cannot read sys.ini"}
 
     # client configs
-    api_id = config["client"]["api_id"]
-    api_hash = config["client"]["api_hash"]
+    api_id = config.get("client", "api_id")
+    api_hash = config.get("client", "api_hash")
     # phone = config["client"]["phone"]
-    username = config["client"]["username"]
+    username = config.get("client", "username")
     # database configs
-    file_address = config["database"]["file_address"]
+    file_address = config.get("database", "file_address")
     # extractor config
-    limit = int(config["setting"]["limit"])
-    date = config["setting"]["date"]
+    limit = int(config.get("setting", "limit"))
+    date = config.get("setting", "date")
     if date is '0':
         date = datetime.date.today()
 
