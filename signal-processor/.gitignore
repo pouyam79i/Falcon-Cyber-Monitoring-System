@@ -1,2 +1,6 @@
 .idea
-Sigal Processor.iml
+*.iml
+winenv
+resources
+falcon*
+__pycache__

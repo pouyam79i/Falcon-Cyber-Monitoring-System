@@ -1,4 +1,7 @@
 import csv
+import os
+this = os.path.dirname(__file__)
+
 
 class Symbol:
     def __init__(self, args):
@@ -20,7 +23,8 @@ class Symbol:
 symbols = {}
 
 def import_symbols():
-    with open('resources/TSETMC/symbols/symbols.csv', 'r') as f:
+
+    with open(this + '/../resources/TSETMC/symbols/symbols.csv', 'r', encoding='utf8') as f:
         csv_reader = csv.reader(f, delimiter='	')
         line_count = 0
         for row in csv_reader:

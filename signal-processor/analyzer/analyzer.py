@@ -1,18 +1,19 @@
 # encoding: utf-8
 from __future__ import unicode_literals
-import hazm
-from polyglot.text import Text, Word, WordList, Chunk, Sentence
+from parsivar import Normalizer, FindStems, Tokenizer, POSTagger
+from polyglot.text import Text\
+    , Word, WordList, Chunk, Sentence
 import symbols
-import summarizer
+from signals import Signal
+
+# import summarizer
 
 symbols.import_symbols()
 
-normalizer = hazm.Normalizer()
-stemmer = hazm.Stemmer()
-lemmatizer = hazm.Lemmatizer()
-tagger = hazm.POSTagger(model='resources/hazm/postagger.model')
-chunker = hazm.Chunker(model='resources/hazm/chunker.model')
-
+normalizer = Normalizer()
+stemmer = FindStems()
+tokenizer = Tokenizer()
+tagger = POSTagger(tagging_model='wapiti')
 
 def count_symbols(words: list['str'], symbols_count: dict):
     for w in words:
@@ -21,48 +22,44 @@ def count_symbols(words: list['str'], symbols_count: dict):
     return symbols_count
 
 
-def parse_text(txt):
-    txt = normalizer.normalize(txt)
+def parse_text(post_text):
+    txt = normalizer.normalize(post_text)
     symbols_count = {}
     polarity = 0
-    # print('normalizer')
-    # print(normalizer.normalize(txt))
-    # print('sent tokenize')
-    # print(hazm.sent_tokenize(txt))
-    # print('stem')
-    # print(stemmer.stem(txt))
-    # print('lemmatize')
-    # print(lemmatizer.lemmatize(txt))
-    print('tag')
-    tag = tagger.tag(hazm.word_tokenize(txt))
-    print(tag)
-    # print('tree2brackets')
-    # print(hazm.tree2brackets(chunker.parse(tag)))
-    # parser = hazm.DependencyParser(tagger=tagger, lemmatizer=lemmatizer)
-    # print('parse')
-    # print(parser.parse(hazm.word_tokenize(txt)))
-
     # WordList([symbol.symbol for symbol in symbols.symbols], language='fa')
+    words = tokenizer.tokenize_words(txt)
+    stemmed_words = []
+    for word in words:
+        stemmed_words.append(stemmer.convert_to_stem(word))
+    stemmed = ' '.join(stemmed_words)
     text = Text(txt)
-    lemmatized_arr = []
+    # tokens = tokenizer.tokenize_sentences(stemmed)
+    # for token in tokens:
+    #     # tag = tagger.parse(tokenizer.tokenize_words(token))
+    #     # print(tag)
+    #     # text = Text(token)
     for w in text.words:
-        lemmatized_arr.append(lemmatizer.lemmatize(w))
-    sentence = ' '.join(lemmatized_arr)
-    text = Text(sentence)
-    symbols_count = count_symbols(text.words, symbols_count)
-    for w in text.words:
-        print('{:<16}{:>2}'.format(w, w.polarity))
-        polarity += w.polarity
-    print(symbols_count)
-    print(polarity)
+        try:
+            # print('{:<16}{:>2}'.format(w, w.polarity))
+            polarity += w.polarity
+        except ValueError as err:
+            print(err)
+            pass
+
+    symbols_count = count_symbols(words, symbols_count)
+    if polarity != 0 and len(symbols_count) > 0:
+        signal = Signal(post_text, symbols_count, polarity)
+        return signal
+    return None
+
+
     # print("Language Detected: Code={}, Name={}\n".format(text.language.code, text.language.name))
 
 
 if __name__ == '__main__':
-    txt = '''فاذر 15 درصد سودین الان هم زیر مقاومت 120 هست که یه کم سخته رد کردنش.
+    txt = '''#فاذر 15 درصد سودین الان هم زیر مقاومت 120 هست که یه کم سخته رد کردنش.
     حد ضرر همون 100
     خرید جدید فعلا ممنوع'''
-    # parse_text(txt)
     article = '''ترکیب یونی گونه‌ای ترکیب شیمیایی است که ذره‌های سازندهٔ آن یون‌های مثبت و منفی هستند. شکل متداول 
     ترکیبات یونی از یک فلز به‌عنوان کاتیون و یک نافلز به‌عنوان آنیون تشکیل می‌شود؛ فلزها تمایل به ازدست‌دادن الکترون 
     و تبدیل‌شدن به یون مثبت را دارند، و نافلزها تمایل به گرفتن الکترون و تبدیل‌شدن به یون منفی را دارند. ترکیبات یونی 
@@ -94,14 +91,15 @@ if __name__ == '__main__':
 '''
     # print(parse_text('وقت مناسبی برای فروش است'))
     # print(parse_text(txt))
-    import fasttext
-    model_path = 'resources/Persian-Wikipedia-Corpus/models/fasttext-cbow/fasttext.model-size=200-window=5.bin'
-    # data = 'resources/Dataset-TSE-chat-in-Telegram-group/chat.clean.txt'
-    # model_path = 'resources/fasttext.telegram.tse.chat.bin'
-    # model = fasttext.train_supervised(data)
-    # model.save_model(model_path)
-    print('سلام!0')
-    # model = fasttext.load_model(model_path, encoding='utf-8')
-    model = fasttext.load_model(model_path)
-    print('سلام!')
-    model.predict_output_word('سلام')
+    # import fasttext
+    # model_path = 'resources/Persian-Wikipedia-Corpus/models/fasttext-cbow/fasttext.model-size=200-window=5.bin'
+    # # data = 'resources/Dataset-TSE-chat-in-Telegram-group/chat.clean.txt'
+    # # model_path = 'resources/fasttext.telegram.tse.chat.bin'
+    # # model = fasttext.train_supervised(data)
+    # # model.save_model(model_path)
+    # print('سلام!0')
+    # # model = fasttext.load_model(model_path, encoding='utf-8')
+    # model = fasttext.load_model(model_path)
+    # print('سلام!')
+    # model.predict_output_word('سلام')
+    print(parse_text(txt))
