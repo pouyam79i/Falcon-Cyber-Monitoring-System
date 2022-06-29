@@ -1,10 +1,13 @@
 # encoding: utf-8
 from __future__ import unicode_literals
 from parsivar import Normalizer, FindStems, Tokenizer, POSTagger
-from polyglot.text import Text\
+from polyglot.text import Text \
     , Word, WordList, Chunk, Sentence
 import symbols
 from signals import Signal
+import re
+import moment
+from datetime import datetime
 
 # import summarizer
 
@@ -15,14 +18,32 @@ stemmer = FindStems()
 tokenizer = Tokenizer()
 tagger = POSTagger(tagging_model='wapiti')
 
+
 def count_symbols(words: list['str'], symbols_count: dict):
+    cur_symbol = ''
     for w in words:
         if symbols.symbols.get(w):
             symbols_count[w] = symbols_count[w] + 1 if symbols_count.get(w) else 1
-    return symbols_count
+            if cur_symbol == '':
+                cur_symbol = w
+    return symbols_count, cur_symbol
 
 
-def parse_text(post_text):
+def get_tagged_symbols(string: str):
+    symbols_count = {}
+    tag_pattern = re.compile(r'#(\w+)')
+    print(tag_pattern.findall(string))
+    # if (symbols_count.get(match))
+
+
+def parse_text(post):
+    post_text = post['text']
+    uid = post['unique_id']
+    if not post_text:
+        return
+    # res = get_tagged_symbols(post_text)
+    # print(res)
+    # return res
     txt = normalizer.normalize(post_text)
     symbols_count = {}
     polarity = 0
@@ -38,20 +59,22 @@ def parse_text(post_text):
     #     # tag = tagger.parse(tokenizer.tokenize_words(token))
     #     # print(tag)
     #     # text = Text(token)
+    if len(text) == 0:
+        return
     for w in text.words:
         try:
             # print('{:<16}{:>2}'.format(w, w.polarity))
             polarity += w.polarity
         except ValueError as err:
-            print(err)
+            # print(err)
             pass
 
-    symbols_count = count_symbols(words, symbols_count)
+    symbols_count, cur_symbol = count_symbols(words, symbols_count)
     if polarity != 0 and len(symbols_count) > 0:
-        signal = Signal(post_text, symbols_count, polarity)
+        date, time = str(moment.now().format('YYYY-MM-DDTHH:mm:ss')).split('T')
+        signal = Signal(uid, post_text, cur_symbol, polarity, date, time, info=str(symbols_count))
         return signal
     return None
-
 
     # print("Language Detected: Code={}, Name={}\n".format(text.language.code, text.language.name))
 

@@ -1,12 +1,21 @@
 crawler:
-  endpoint: 'localhost:3001'
+  endpoint: 'localhost:8080'
 
 analyzer:
-  endpoint: 'localhost:3002'
+  endpoint: 'localhost:5000'
 
 auth:
   admin:
     admin
+
+database: mysql2
+
+mysql2:
+  database: falcon
+  user: root
+  host: localhost
+  port: 3306
+  password: 'WX$nyzNt2B3#'
 
 session:
   key: 'koa.sess'

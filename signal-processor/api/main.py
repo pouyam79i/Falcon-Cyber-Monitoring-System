@@ -1,6 +1,7 @@
 import flask
 from flask import request, jsonify
 from analyzer import parse_text
+import pprint
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -16,9 +17,10 @@ def analyze():
     req = request.json
     out = []
     for post in req:
-        val = parse_text(post['text'])
-        out.append(val)
-    return jsonify(str(out))
+        val = parse_text(post)
+        if val is not None:
+            out.append(val.serialize())
+    return jsonify(out)
 
 
 app.run()
