@@ -4,7 +4,6 @@ astroid==2.9.3
 asttokens==2.0.5
 attrs==21.4.0
 autopep8==1.6.0
-baaz==0.1
 backcall==0.2.0
 beautifulsoup4==4.10.0
 black==21.12b0
