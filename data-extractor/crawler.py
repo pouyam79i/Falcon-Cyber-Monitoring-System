@@ -65,17 +65,25 @@ async def crawl():
         return {"attempt": "failed", "reason": "cannot read sys.ini"}
 
     # client configs
-    api_id = config.get("client", "api_id")
-    api_hash = config.get("client", "api_hash")
-    # phone = config["client"]["phone"]
-    username = config.get("client", "username")
-    # database configs
-    file_address = config.get("database", "file_address")
-    # extractor config
-    limit = int(config.get("setting", "limit"))
-    date = config.get("setting", "date")
-    if date is '0':
-        date = datetime.today()
+    # api_id = config.get("client", "api_id")
+    # api_hash = config.get("client", "api_hash")
+    # # phone = config["client"]["phone"]
+    # username = config.get("client", "username")
+    # # database configs
+    # file_address = config.get("database", "file_address")
+    # # extractor config
+    # limit = int(config.get("setting", "limit"))
+    # date = config.get("setting", "date")
+    api_id = 16188299
+    api_hash = 'f11110bb980fe772d09e70e78d8e8c5b'
+    username = 'falcon_ce'
+    phone = '+989014864758'
+    date = '0'
+    limit = 0
+    file_address = 'storage/'
+
+    if date == '0':
+        date = datetime.today() - timedelta(days=4)
     print(date)
 
     # exisiting channel info
@@ -129,7 +137,7 @@ async def crawl():
                             break
 
             # saving json file
-            save_json(data_list, file_address)
+            # save_json(data_list, file_address)
 
             # returning jsonified result
             return data_list

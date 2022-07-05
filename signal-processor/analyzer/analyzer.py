@@ -135,7 +135,7 @@ if __name__ == '__main__':
     # print('سلام!')
     # model.predict_output_word('سلام')
     dic = {
-        'text':txt.__str__(),
-        'unique_id':123456789
+        'text': txt.__str__(),
+        'unique_id': 123456789
     }
     print(parse_text(dic))

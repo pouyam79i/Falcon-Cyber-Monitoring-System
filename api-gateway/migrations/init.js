@@ -37,6 +37,7 @@ export const up = function (knex) {
         table.string('UID', 256).primary()
         table.string('SYMBOLS', 256)
         table.integer('POLARITY')
+        table.integer('IS_BUY')
         // table.string('DATE', 30)
         // table.string('TIME', 30)
         table.text('INFO')

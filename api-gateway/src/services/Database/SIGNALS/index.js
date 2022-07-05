@@ -8,6 +8,7 @@ const columns = {
   // time: 'TIME',
   info: 'INFO',
   polarity: 'POLARITY',
+  is_buy: 'IS_BUY',
   symbols: 'SYMBOLS',
   text: 'TEXT',
   uid: 'UID',
