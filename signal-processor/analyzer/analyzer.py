@@ -1,8 +1,7 @@
 # encoding: utf-8
 from __future__ import unicode_literals
 from parsivar import Normalizer, FindStems, Tokenizer, POSTagger
-from polyglot.text import Text \
-    , Word, WordList, Chunk, Sentence
+from polyglot.text import Text, Word, WordList, Chunk, Sentence
 import symbols
 from signals import Signal
 import re
@@ -18,12 +17,16 @@ stemmer = FindStems()
 tokenizer = Tokenizer()
 tagger = POSTagger(tagging_model='wapiti')
 
+buy = ['خرید']
+sale = ['فروش']
+
 
 def count_symbols(words: list['str'], symbols_count: dict):
     cur_symbol = ''
     for w in words:
         if symbols.symbols.get(w):
-            symbols_count[w] = symbols_count[w] + 1 if symbols_count.get(w) else 1
+            symbols_count[w] = symbols_count[w] + \
+                1 if symbols_count.get(w) else 1
             if cur_symbol == '':
                 cur_symbol = w
     return symbols_count, cur_symbol
@@ -72,7 +75,8 @@ def parse_text(post):
     symbols_count, cur_symbol = count_symbols(words, symbols_count)
     if polarity != 0 and len(symbols_count) > 0:
         date, time = str(moment.now().format('YYYY-MM-DDTHH:mm:ss')).split('T')
-        signal = Signal(uid, post_text, cur_symbol, polarity, date, time, info=str(symbols_count))
+        signal = Signal(uid, post_text, cur_symbol, polarity,
+                        date, time, info=str(symbols_count))
         return signal
     return None
 
