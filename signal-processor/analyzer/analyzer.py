@@ -1,13 +1,14 @@
 # encoding: utf-8
 from __future__ import unicode_literals
+
 from parsivar import Normalizer, FindStems, Tokenizer, POSTagger
-from polyglot.text import Text \
-    , Word, WordList, Chunk, Sentence
+from polyglot.text import Text
+
 import symbols
 from signals import Signal
+
 import re
 import moment
-from datetime import datetime
 
 # import summarizer
 
@@ -18,6 +19,8 @@ stemmer = FindStems()
 tokenizer = Tokenizer()
 tagger = POSTagger(tagging_model='wapiti')
 
+buy = ['خریدن', 'خرید']
+sale = ['فروش','فروختن']
 
 def count_symbols(words: list['str'], symbols_count: dict):
     cur_symbol = ''
@@ -53,26 +56,32 @@ def parse_text(post):
     for word in words:
         stemmed_words.append(stemmer.convert_to_stem(word))
     stemmed = ' '.join(stemmed_words)
-    text = Text(txt)
+    text = Text(stemmed)
     # tokens = tokenizer.tokenize_sentences(stemmed)
     # for token in tokens:
     #     # tag = tagger.parse(tokenizer.tokenize_words(token))
-    #     # print(tag)
+    #     # print(tag)زمث
     #     # text = Text(token)
     if len(text) == 0:
         return
+
+    buy_count = 0
+    sale_count = 0
     for w in text.words:
         try:
-            # print('{:<16}{:>2}'.format(w, w.polarity))
+            if w in buy:
+                buy_count += 1
+            elif w in sale:
+                sale_count += 1
             polarity += w.polarity
         except ValueError as err:
             # print(err)
             pass
-
+    is_buy = 1 if buy_count * polarity > 0 else 0
     symbols_count, cur_symbol = count_symbols(words, symbols_count)
     if polarity != 0 and len(symbols_count) > 0:
         date, time = str(moment.now().format('YYYY-MM-DDTHH:mm:ss')).split('T')
-        signal = Signal(uid, post_text, cur_symbol, polarity, date, time, info=str(symbols_count))
+        signal = Signal(uid, post_text, cur_symbol, polarity, is_buy, date, time, info=str(symbols_count))
         return signal
     return None
 
@@ -125,4 +134,8 @@ if __name__ == '__main__':
     # model = fasttext.load_model(model_path)
     # print('سلام!')
     # model.predict_output_word('سلام')
-    print(parse_text(txt))
+    dic = {
+        'text':txt.__str__(),
+        'unique_id':123456789
+    }
+    print(parse_text(dic))

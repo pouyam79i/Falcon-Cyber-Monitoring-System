@@ -1,2 +1,4 @@
 event_log.txt
 .idea
+venv
+*.whl

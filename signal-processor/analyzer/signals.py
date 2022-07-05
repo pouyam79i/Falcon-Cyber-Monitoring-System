@@ -3,10 +3,11 @@ from symbols import Symbol
 
 
 class Signal:
-    def __init__(self, uid, text,  symbols: [Symbol], polarity, date, time, info=''):
+    def __init__(self, uid, text,  symbols: [Symbol], polarity, is_buy, date, time, info=''):
         self.uid = uid
         self.symbols = symbols
         self.polarity = polarity
+        self.is_buy = is_buy
         self.text = text
         self.info = info
         self.date = date
@@ -23,6 +24,7 @@ class Signal:
             'uid': str(self.uid),
             'symbols': str(self.symbols),
             'polarity': str(self.polarity),
+            'is_buy': str(self.is_buy),
             'text': str(self.text),
             'info': str(self.info),
             'date': str(self.date),
