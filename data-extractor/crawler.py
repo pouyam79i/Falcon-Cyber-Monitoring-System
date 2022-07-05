@@ -11,6 +11,7 @@ import re
 
 # main code:
 
+
 def read_conf():
     # reading config file
     try:
@@ -74,7 +75,7 @@ async def crawl():
     limit = int(config.get("setting", "limit"))
     date = config.get("setting", "date")
     if date is '0':
-        date = datetime.today() - timedelta(days=2)
+        date = datetime.today()
     print(date)
 
     # exisiting channel info
@@ -93,7 +94,7 @@ async def crawl():
             # gathered data will be appended to this list
             data_list = []
 
-            # iterating over today messages of channels 
+            # iterating over today messages of channels
 
             counter = 0
             for chat in channeles:
@@ -101,11 +102,14 @@ async def crawl():
 
                     # data format
                     message_date_str = str(message.date)
-                    message_date, time, timezone = re.split(r'[T\s\+]', message_date_str)
+                    message_date, time, timezone = re.split(
+                        r'[T\s\+]', message_date_str)
                     data = {
-                        "unique_id": (str(chat) + '*' + str(message.id)),  # str
+                        # str
+                        "unique_id": (str(chat) + '*' + str(message.id)),
                         "channel_id": chat,  # int
-                        "channel_name": channeles_name['{}'.format(chat)],  # str
+                        # str
+                        "channel_name": channeles_name['{}'.format(chat)],
                         "id": message.id,  # int
                         "from_id": str(message.from_id),  # str or null
                         "text": message.text,  # str
@@ -116,7 +120,7 @@ async def crawl():
                         "forwards": message.forwards,  # int
                         "edit_date": str(message.edit_date)  # str
                     }
-                    # print(data)    
+                    # print(data)
                     data_list.append(data)
 
                     counter = counter + 1
